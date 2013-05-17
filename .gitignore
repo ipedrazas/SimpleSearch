@@ -11,4 +11,4 @@ bin/
 *.ipr
 *.iws
 gradle.properties
-Crawler/build
+
