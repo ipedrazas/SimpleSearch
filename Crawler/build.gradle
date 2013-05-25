@@ -1,0 +1,52 @@
+apply plugin: 'groovy'
+apply plugin:'application'
+
+group = 'SimpleSearch'
+
+dependencies {
+   compile localGroovy()
+   testCompile 'junit:junit:4.11'
+   compile 'net.sourceforge.nekohtml:nekohtml:1.9.16'
+   compile 'com.gmongo:gmongo:1.1'
+   compile 'org.elasticsearch:elasticsearch:0.17.6'
+   compile 'org.elasticsearch:elasticsearch-lang-groovy:0.17.6'
+   compile 'commons-codec:commons-codec:1.7'
+}
+
+repositories {
+    mavenCentral()
+}
+
+
+task init << {
+    println " $project.group $project.name $version "
+    println "    $project.description "
+}
+
+
+mainClassName = "me.pedrazas.simplesearch.Crawler"
+
+test {
+
+
+
+      // show standard out and standard error of the test JVM(s) on the console
+      testLogging.showStandardStreams = true
+
+      // set heap size for the test JVM(s)
+      minHeapSize = "128m"
+      maxHeapSize = "512m"
+
+      // set JVM arguments for the test JVM(s)
+      jvmArgs '-XX:MaxPermSize=256m'
+
+      // listen to events in the test execution lifecycle
+      beforeTest { descriptor ->
+         logger.lifecycle("Running test: " + descriptor)
+      }
+
+      // listen to standard out and standard error of the test JVM(s)
+      onOutput { descriptor, event ->
+         logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
+      }
+}
