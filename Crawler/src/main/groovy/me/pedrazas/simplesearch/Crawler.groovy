@@ -26,7 +26,7 @@ class Crawler{
     def base_urls = ["http://localhost", "http://ivan.pedrazas", "http://simplesearch."]
 
     static main(args) {
-        String[] urls = ["http://localhost/docs/"]
+        String[] urls = ["http://localhost"]
         def c = new Crawler(urls)
         c.run()
 
@@ -94,6 +94,7 @@ class Crawler{
             if (url.startsWith('http://') || url.startsWith('https://')){
                 return  new URI(url).normalize().toURL().toString()
             }else if (url.startsWith('/')){
+
                 println "(HOST) URL : ${url}"
                 return new URI(host + url).normalize().toURL().toString()
             }else{

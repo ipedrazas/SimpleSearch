@@ -46,4 +46,23 @@ class SimpleSearchUtils{
             flag = true
         return flag
     }
+
+    // fixes relative links and discards unwanted protocols
+    static def processURL(host, base, url) {
+        url = stripQueryStringAndHashFromPath(url.replaceAll(" ","%20")) //
+        if (url.startsWith('http://') || url.startsWith('https://')){
+            return  new URI(url).normalize().toURL().toString()
+        }else if (url.startsWith('/')){
+            return new URI(host + url).normalize().toURL().toString()
+        }else{
+            return new URI(base + url).normalize().toURL().toString()
+        }
+    }
+
+    static def stripQueryStringAndHashFromPath(url) {
+        // if(!(url.startsWith('#') || url.startsWith('?'))){
+        if(!url.startsWith('#'))
+            return url.split("\\?")[0].split("#")[0];
+        return ""
+    }
 }
