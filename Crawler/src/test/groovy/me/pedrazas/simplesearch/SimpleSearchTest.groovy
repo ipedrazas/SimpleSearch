@@ -55,14 +55,31 @@ class SimpleSearchUtilsTest extends GroovyTestCase {
                         "http://localhost/docs/any/page.html",
                         "http://localhost/root.html",
                         "http://localhost/something/else.html"
-
                      ]
         test_urls.each{
             def res = SimpleSearchUtils.processURL(host, base, it)
             assertTrue(res in result)
         }
+    }
+
+    void testExtractLinks(){
+        def linkMap = new HashMap<String, Boolean>()
+        def url = "http://octo.pedrazas.me"
+        SimpleSearchUtils.extractLinks(url, linkMap)
+        assertEquals(linkMap.size(), 9)
+    }
 
 
+    void testAddSlash(){
+        def url1 = "http://localhost/bootstrap"
+        def url2 = "http://localhost/bootstrap/"
+        def url3 = "http://localhost/bootstrap/index.html"
+        url1 = SimpleSearchUtils.addSlash(url1)
+        url2 = SimpleSearchUtils.addSlash(url2)
+        url3 = SimpleSearchUtils.addSlash(url3)
 
+        assertTrue(url1.endsWith('/'))
+        assertTrue(url2.endsWith('/'))
+        assertFalse(url3.endsWith('/'))
     }
 }

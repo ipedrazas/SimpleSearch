@@ -27,9 +27,6 @@ task init << {
 mainClassName = "me.pedrazas.simplesearch.Crawler"
 
 test {
-
-
-
       // show standard out and standard error of the test JVM(s) on the console
       testLogging.showStandardStreams = true
 

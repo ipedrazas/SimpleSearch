@@ -16,6 +16,7 @@
 
 package me.pedrazas.simplesearch
 
+import org.cyberneko.html.parsers.SAXParser
 
 class SimpleSearchUtils{
 
@@ -38,6 +39,7 @@ class SimpleSearchUtils{
         }
         return flag
     }
+
     static def isIndexable(String url, List<String> formats, List<String> base_urls){
         def flag = false
         if(isValidFormat(url, formats))
@@ -64,5 +66,43 @@ class SimpleSearchUtils{
         if(!url.startsWith('#'))
             return url.split("\\?")[0].split("#")[0];
         return ""
+    }
+
+    static def extractLinks(String url, Map<String, Boolean> linkMap){
+        def parser = new SAXParser()
+        parser.setFeature('http://xml.org/sax/features/namespaces', false)
+        try{
+            // extract links from current URL
+            url = addSlash(url)
+            def host = (url =~ /(http:\/\/[^\/]+)\/?.*/)[0][1]
+            def base = url[0..url.lastIndexOf('/')]
+            //base = new URI(base).normalize().toURL().toString()
+            def page = new XmlParser(parser).parse(url)
+            def links = page.depthFirst().A.grep { it.@href }.'@href'
+            if(links){
+                //  fix and put all new links to map, visited set to false
+                links.each {
+                    def newURL = SimpleSearchUtils.processURL(host, base, it)
+                    if(newURL != null)
+                        if (linkMap.containsKey(newURL) == false)
+                            linkMap.put(newURL, false)
+
+                }
+                println "Url Candidates ${links.size()} URLs. Total: ${linkMap.size()}"
+            }
+        }catch (FileNotFoundException) {
+            println "URL Not Found ${url}"
+            println "ERROR ${FileNotFoundException.printStackTrace()}"
+        }
+    }
+
+    // normalise urls finishing on a directory
+    static def addSlash(String url){
+        def ini = url.lastIndexOf('/')
+        def end = url.length()-1
+        if(ini<end)
+            if(!url[ini..end].contains('.'))
+                return url + '/'
+        return url
     }
 }
