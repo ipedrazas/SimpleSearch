@@ -1,4 +1,5 @@
 
+package me.pedrazas.simplesearch
 
 import groovy.util.GroovyTestCase
 import me.pedrazas.simplesearch.WebPage
@@ -6,7 +7,7 @@ import org.apache.commons.codec.binary.Base64
 
 class WebPageTest extends GroovyTestCase {
     void testBigFileToBase64() {
-        def url = "http://localhost/docs/books/Learning%20iOS%20Programming,%202nd%20Edition/Learning%20iOS%20Programming,%202nd%20Edition.pdf"
+        def url = "http://localhost/books/Closure_%20The%20Definitive%20Guide/Closure_%20The%20Definitive%20Guide.PDF"
         // def url = "http://localhost/docs/index.html"
         def w = new WebPage(url)
         def file = WebPage.fetchContent(url)
