@@ -13,18 +13,18 @@ class WebPageTest extends GroovyTestCase {
         def file = WebPage.fetchContent(url)
         assertNotNull file
     }
-    // void testUrl() {
-    //     def url = "http://localhost/docs/grails-docs-2.2.2/api/org/codehaus/groovy/grails/web/converters/configuration/ConvertersConfigurationHolder.html"
-    //     def w = new WebPage(url)
-    //     def file = WebPage.fetchContent(url)
-    //     assertNotNull file
-    // }
+    void testUrl() {
+        def url = "http://localhost/grails-docs-2.2.2/api/org/codehaus/groovy/grails/web/converters/configuration/ConvertersConfigurationHolder.html"
+        def w = new WebPage(url)
+        def file = WebPage.fetchContent(url)
+        assertNotNull file
+    }
 
-    // void testFetchContent(){
-    //     def url = "http://localhost/docs/grails-docs-2.2.2/api/org/codehaus/groovy/grails/web/converters/configuration/ConvertersConfigurationHolder.html"
-    //     def file = WebPage.fetchContent(url)
-    //     assertNotNull file
-    //     byte[] decoded = Base64.decodeBase64(file);
-    //     println "Base 64 Decoded  String : " + new String(decoded)
-    // }
+    void testFetchContent(){
+        def url = "http://localhost/grails-docs-2.2.2/api/org/codehaus/groovy/grails/web/converters/configuration/ConvertersConfigurationHolder.html"
+        def file = WebPage.fetchContent(url)
+        assertNotNull file
+        byte[] decoded = Base64.decodeBase64(file);
+        println "Base 64 Decoded  String : " + new String(decoded)
+    }
 }
