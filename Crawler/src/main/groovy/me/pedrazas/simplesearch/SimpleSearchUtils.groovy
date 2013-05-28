@@ -83,13 +83,15 @@ class SimpleSearchUtils{
                 //  fix and put all new links to map, visited set to false
                 links.each {
                     def newURL = SimpleSearchUtils.processURL(host, base, it)
-                    if(newURL != null)
-                        if (linkMap.containsKey(newURL) == false)
+                    if(newURL != null){
+                        if (linkMap.containsKey(newURL) == false){
                             linkMap.put(newURL, false)
-
+                        }
+                    }
                 }
                 println "Url Candidates ${links.size()} URLs. Total: ${linkMap.size()}"
-            }
+            }else
+                println "No links found"
         }catch (FileNotFoundException) {
             println "URL Not Found ${url}"
             println "ERROR ${FileNotFoundException.printStackTrace()}"
@@ -100,9 +102,11 @@ class SimpleSearchUtils{
     static def addSlash(String url){
         def ini = url.lastIndexOf('/')
         def end = url.length()-1
-        if(ini<end)
-            if(!url[ini..end].contains('.'))
+        if(ini<end){
+            if(!url[ini..end].contains('.')){
                 return url + '/'
+            }
+        }
         return url
     }
 }

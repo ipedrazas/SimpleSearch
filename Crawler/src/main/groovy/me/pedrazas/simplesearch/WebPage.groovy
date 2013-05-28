@@ -16,13 +16,11 @@
 
 package me.pedrazas.simplesearch;
 
-import com.gmongo.GMongo
+import com.mongodb.DB
 
 class WebPage {
 
-    def mongo = new GMongo()
-    def db = mongo.getDB("simpleSearch")
-
+    def db
     String url
     String contentType
     int oid
@@ -30,18 +28,19 @@ class WebPage {
     long modified
     boolean updated = false
     boolean indexed = false
+    int responseCode = 0
 
 
-    WebPage(String websiteAddress){
+    WebPage(String websiteAddress, DB db){
         this.url = websiteAddress
         this.created = new Date()
+        this.db = db
         try{
             def conn = new URL(websiteAddress).openConnection()
             if (conn.responseCode == 200 || conn.responseCode == 201){
+                this.responseCode = conn.responseCode
                 this.contentType = conn.contentType
                 this.modified = conn.lastModified
-              } else {
-                println "Error Connecting to " + websiteAddress
               }
         }catch (Exception) {
             Exception.printStackTrace()
@@ -60,9 +59,9 @@ class WebPage {
 
     def save(){
             // oid: this.next() here because we don't want to count the not found errors
-        // if(this.isIndexable()){
+        if (this.responseCode == 200 || this.responseCode == 201){
             def page = [url: this.url, content_type: this.contentType, oid: this.next(), modified: this.modified, added: this.created, indexed: this.indexed]
             this.db.links.save(page)
-        // }
+        }
     }
 }
