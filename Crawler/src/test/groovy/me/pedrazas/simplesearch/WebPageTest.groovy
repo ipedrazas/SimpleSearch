@@ -37,6 +37,6 @@ class WebPageTest extends GroovyTestCase {
     void testSaveWebPage() {
         def url = "http://ivan.pedrazas.me/?p=122"
         def w = new WebPage(url, db)
-        w.save()
+        // w.save()
     }
 }
