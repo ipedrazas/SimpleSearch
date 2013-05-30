@@ -17,26 +17,25 @@
 package me.pedrazas.simplesearch
 
 import groovy.util.GroovyTestCase
+import org.apache.commons.codec.binary.Base64
 import com.gmongo.GMongo
 import me.pedrazas.simplesearch.WebPage
+import me.pedrazas.simplesearch.SimpleSearchUtils
+// import me.pedrazas.simplesearch.ElasticSearchSender
 
-class WebPageTest extends GroovyTestCase {
+class ElasticSearchSenderTest extends GroovyTestCase {
 
     def mongo = new GMongo()
     def db = mongo.getDB("simpleSearch")
 
-    void testBigFileToBase64() {
-        def url = "http://localhost/docs/books/Closure_%20The%20Definitive%20Guide/Closure_%20The%20Definitive%20Guide.PDF"
+    void testUrl() {
+        def url = "http://localhost/grails-docs-2.2.2/api/org/codehaus/groovy/grails/web/taglib/GroovyElseIfTag.html"
         def w = new WebPage(url, db)
-    }
-    void testWebPage() {
-        def url = "http://localhost/docs/index.html"
-        def w = new WebPage(url, db)
-    }
+        def file = SimpleSearchUtils.fetchContent(url)
+        assertNotNull file
+        ElasticSearchSender.send('simple', 'webpage', w.next(), url, w.contentType, file)
 
-    void testSaveWebPage() {
-        def url = "http://localhost/docs/index.html"
-        def w = new WebPage(url, db)
-        w.save()
     }
 }
+
+

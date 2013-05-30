@@ -1,0 +1,34 @@
+
+allprojects {
+    apply plugin: 'groovy'
+    group = 'SimpleSearch'
+    version = '0.1'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile localGroovy()
+    testCompile 'junit:junit:4.11'
+    compile 'net.sourceforge.nekohtml:nekohtml:1.9.16'
+    compile 'com.gmongo:gmongo:1.1'
+    compile 'commons-codec:commons-codec:1.7'
+    compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.6'
+    compile project(':Crawler')
+    compile project(':Indexer')
+}
+
+task init << {
+    println " $project.group $project.name $version "
+    println "    $project.description "
+}
+
+[ 'Crawler', 'Indexer' ].each { submodule ->
+  task "${submodule}"(type: JavaExec) {
+    group = 'SimpleSearch'
+    main = 'me.pedrazas.simplesearch.' + submodule
+    classpath runtimeClasspath
+  }
+}

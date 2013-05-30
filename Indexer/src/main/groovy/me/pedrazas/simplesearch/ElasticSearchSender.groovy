@@ -14,6 +14,8 @@
  *  limitations under the License.
  */
 
+package me.pedrazas.simplesearch
+
 import groovyx.net.http.HTTPBuilder
 import static groovyx.net.http.Method.POST
 import static groovyx.net.http.ContentType.JSON
@@ -32,11 +34,12 @@ class ElasticSearchSender{
                   webpage : [
                     url: url,
                     content_type: contentType,
-                    file: file
+                    content: file
                   ]
                 ]
 
                 response.success = { resp, json ->
+                    println resp
                     println json
                 }
 

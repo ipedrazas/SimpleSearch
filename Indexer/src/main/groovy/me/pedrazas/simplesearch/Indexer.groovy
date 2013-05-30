@@ -31,9 +31,9 @@ class Indexer{
         // content_type: "text\html",
         db.links.find(indexed: false).each{
             try{
-                def file = WebPage.fetchContent(it.url)
+                def file = SimpleSearchUtils.fetchContent(it.url)
                 if(file!=null){
-                    ElasticSearchSender.send('simple', 'webpage', it.oid, it.url, it.contentType, file)
+                    ElasticSearchSender.send('simple', 'webpage', it.oid, it.url, it.content_type, file)
 
                     println "Indexed OK! ${it._id} - ${it.url}"
                     db.links.update(

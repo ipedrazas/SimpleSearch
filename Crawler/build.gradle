@@ -8,8 +8,6 @@ dependencies {
    testCompile 'junit:junit:4.11'
    compile 'net.sourceforge.nekohtml:nekohtml:1.9.16'
    compile 'com.gmongo:gmongo:1.1'
-   compile 'org.elasticsearch:elasticsearch:0.17.6'
-   compile 'org.elasticsearch:elasticsearch-lang-groovy:0.17.6'
    compile 'commons-codec:commons-codec:1.7'
 }
 

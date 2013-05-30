@@ -19,7 +19,9 @@ We use [ElasticSearch](http://elasticsearch.org ) as the search engine and the c
 ### ElasticSearch installation
     wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.0.deb
     sudo dpkg -i elasticsearch-0.90.0.deb
-    sudo service elasticsearch start
+
+    Installed at /usr/share/elasticsearch
+
 
 
 ## Plugins & Rivers
@@ -31,12 +33,12 @@ We use [ElasticSearch](http://elasticsearch.org ) as the search engine and the c
 The mapper attachments plugin adds the attachment type to ElasticSearch using Tika.
 
 In order to install the plugin, simply run:
-    bin/plugin -install elasticsearch/elasticsearch-mapper-attachments/1.7.0
+    sudo bin/plugin -install elasticsearch/elasticsearch-mapper-attachments/1.7.0
 
 ### Web Interface - Inquisitor
 If you want to have a Web interface [ElasticSearch Inquisitor](https://github.com/polyfractal/elasticsearch-inquisitor)
 
-    bin/plugin -install polyfractal/elasticsearch-inquisitor
+    sudo bin/plugin -install polyfractal/elasticsearch-inquisitor
 
 Once the plugin is installed go to [ES Inquisitor](http://localhost:9200/_plugin/inquisitor)
 
@@ -48,8 +50,14 @@ You can find [FS River](https://github.com/dadoonet/fsriver) in github
 
 In order to install the plugin, run:
 
-    bin/plugin -install fr.pilato.elasticsearch.river/fsriver/0.2.0
+    sudo bin/plugin -install fr.pilato.elasticsearch.river/fsriver/0.2.0
 
+## MongoDB River
+
+You can find [FS River](https://github.com/richardwilly98/elasticsearch-river-mongodb/) in github
+
+
+Remember to restart ES after installing these plugins
 
 
 

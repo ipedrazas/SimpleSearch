@@ -13,39 +13,34 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+
 package me.pedrazas.simplesearch;
 
-import com.gmongo.GMongo
-import org.apache.commons.codec.binary.Base64OutputStream
+import com.mongodb.DB
 
 class WebPage {
 
-    def mongo = new GMongo()
-    def db = mongo.getDB("simpleSearch")
-
+    def db
     String url
     String contentType
     int oid
     Date created
-    Date indexedDate
     long modified
     boolean updated = false
     boolean indexed = false
-
-    def formats = ["text/html", "application/pdf"]
-    def base_urls = ["http://localhost", "http://ivan.pedrazas", "http://simplesearch."]
+    int responseCode = 0
 
 
-    WebPage(String websiteAddress){
+    WebPage(String websiteAddress, DB db){
         this.url = websiteAddress
         this.created = new Date()
+        this.db = db
         try{
             def conn = new URL(websiteAddress).openConnection()
             if (conn.responseCode == 200 || conn.responseCode == 201){
+                this.responseCode = conn.responseCode
                 this.contentType = conn.contentType
                 this.modified = conn.lastModified
-              } else {
-                println "Error Connecting to " + websiteAddress
               }
         }catch (Exception) {
             Exception.printStackTrace()
@@ -64,31 +59,9 @@ class WebPage {
 
     def save(){
             // oid: this.next() here because we don't want to count the not found errors
-        if(this.isIndexable()){
+        if (this.responseCode == 200 || this.responseCode == 201){
             def page = [url: this.url, content_type: this.contentType, oid: this.next(), modified: this.modified, added: this.created, indexed: this.indexed]
             this.db.links.save(page)
         }
-    }
-
-
-    def isIndexable(){
-        def flag = false;
-        this.formats.each{
-            if(this.contentType.startsWith(it))
-                flag = true
-        }
-        this.base_urls.each{
-            if(this.url.startsWith(it))
-                flag = true
-        }
-        return flag
-    }
-
-    static String fetchContent(String url){
-        println "Fetching ${url}"
-        ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-        Base64OutputStream b64os = new Base64OutputStream(byteOut);
-        b64os << new URL(url).openStream()
-        return new String(byteOut.toByteArray());
     }
 }
