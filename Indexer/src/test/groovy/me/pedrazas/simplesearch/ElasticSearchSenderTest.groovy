@@ -29,7 +29,7 @@ class ElasticSearchSenderTest extends GroovyTestCase {
     def db = mongo.getDB("simpleSearch")
 
     void testUrl() {
-        def url = "http://localhost/grails-docs-2.2.2/api/org/codehaus/groovy/grails/web/taglib/GroovyElseIfTag.html"
+        def url = "http://ivan.pedrazas.me/?p=122"
         def w = new WebPage(url, db)
         def file = SimpleSearchUtils.fetchContent(url)
         assertNotNull file
