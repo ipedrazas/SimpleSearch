@@ -20,10 +20,15 @@ import groovy.util.GroovyTestCase
 import com.gmongo.GMongo
 import me.pedrazas.simplesearch.WebPage
 
+
+import com.foursquare.fongo.Fongo;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+
 class WebPageTest extends GroovyTestCase {
 
-    def mongo = new GMongo()
-    def db = mongo.getDB("simpleSearch")
+    Fongo fongo = new Fongo("mongo server 1");
+    DB db = fongo.getDB("mydb");
 
     void testBigFileToBase64() {
         def url = "http://www.fsa.usda.gov/Internet/FSA_File/tech_assist.pdf"
@@ -37,6 +42,6 @@ class WebPageTest extends GroovyTestCase {
     void testSaveWebPage() {
         def url = "http://ivan.pedrazas.me/?p=122"
         def w = new WebPage(url, db)
-        // w.save()
+        w.save()
     }
 }
