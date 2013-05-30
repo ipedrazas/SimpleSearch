@@ -26,16 +26,16 @@ class WebPageTest extends GroovyTestCase {
     def db = mongo.getDB("simpleSearch")
 
     void testBigFileToBase64() {
-        def url = "http://localhost/docs/books/Closure_%20The%20Definitive%20Guide/Closure_%20The%20Definitive%20Guide.PDF"
+        def url = "http://www.fsa.usda.gov/Internet/FSA_File/tech_assist.pdf"
         def w = new WebPage(url, db)
     }
     void testWebPage() {
-        def url = "http://localhost/docs/index.html"
+        def url = "http://ivan.pedrazas.me/?p=122"
         def w = new WebPage(url, db)
     }
 
     void testSaveWebPage() {
-        def url = "http://localhost/docs/index.html"
+        def url = "http://ivan.pedrazas.me/?p=122"
         def w = new WebPage(url, db)
         w.save()
     }
