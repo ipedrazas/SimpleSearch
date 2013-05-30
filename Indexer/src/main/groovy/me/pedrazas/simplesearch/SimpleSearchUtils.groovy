@@ -111,7 +111,6 @@ class SimpleSearchUtils{
     }
 
     static String fetchContent(String url){
-        println "Fetching ${url}"
         ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
         Base64OutputStream b64os = new Base64OutputStream(byteOut);
         b64os << new URL(url).openStream()
