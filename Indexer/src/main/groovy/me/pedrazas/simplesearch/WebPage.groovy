@@ -14,9 +14,12 @@
  *  limitations under the License.
  */
 
-package me.pedrazas.simplesearch;
+package me.pedrazas.simplesearch
 
 import com.mongodb.DB
+import com.mongodb.DBCollection
+import com.mongodb.DBObject
+import com.mongodb.BasicDBObject;
 
 class WebPage {
 
@@ -47,21 +50,28 @@ class WebPage {
         }
     }
 
-    def next(){
-        def counter = db.counters.findAndModify([_id: "seq"], [$inc: [c: 1]])
-        if (counter==null){
-            counter = [_id: 'seq', c: 2]
-            db.counters.insert(counter)
-            return 1
-        }
-        return counter.c
+    def next() {
+        def seq = this.db.getCollection("counters");
+        def query = new BasicDBObject();
+        query.put("_id", "seq");
+        def update = new BasicDBObject("c", 2);
+        def res = seq.findAndModify(query, new BasicDBObject(), new BasicDBObject(), false, update, true, true);
+        return res.get("c").toString();
     }
 
     def save(){
             // oid: this.next() here because we don't want to count the not found errors
         if (this.responseCode == 200 || this.responseCode == 201){
-            def page = [url: this.url, content_type: this.contentType, oid: this.next(), modified: this.modified, added: this.created, indexed: this.indexed]
-            this.db.links.save(page)
+            // def page = [url: this.url, content_type: this.contentType, oid: this.next(), modified: this.modified, added: this.created, indexed: this.indexed]
+            DBCollection collection = db.getCollection("counters");
+            collection.insert(new BasicDBObject("url", this.url)
+                .append("content_type", this.contentType)
+                .append("oid", this.next())
+                .append("modified", this.modified)
+                .append("added", this.created)
+                .append("indexed", this.indexed)
+            )
+            // this.db.links.save(page)
         }
     }
 }

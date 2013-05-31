@@ -16,11 +16,12 @@
 
 package me.pedrazas.simplesearch
 
-import com.gmongo.GMongo
+import com.mongodb.Mongo;
+
 
 class Crawler{
 
-    def mongo = new GMongo()
+    def mongo = new Mongo()
     def db = mongo.getDB("simpleSearch")
 
     Map<String, Boolean> linkMap

@@ -17,12 +17,8 @@
 package me.pedrazas.simplesearch
 
 import groovy.util.GroovyTestCase
-import com.gmongo.GMongo
 import me.pedrazas.simplesearch.WebPage
-
-
 import com.foursquare.fongo.Fongo;
-import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 
 class WebPageTest extends GroovyTestCase {
