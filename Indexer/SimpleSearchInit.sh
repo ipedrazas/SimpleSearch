@@ -32,6 +32,25 @@ curl -XPOST localhost:9200/simple -d '{
     }
 }'
 
+curl -XPOST localhost:9200/simple2 -d '{
+    "settings" : {
+        "number_of_shards" : 1,
+        "number_of_replicas":0
+    },
+    "mappings" : {
+        "webpage" : {
+            "_source" : { "enabled" : true , "excludes": ["webpage.content"]},
+            "properties" : {
+                "url" : { "type" : "string", "index" : "not_analyzed" },
+                "content_type" : { "type" : "string", "index" : "not_analyzed" },
+                "content" : {
+                    "type" : "attachment"
+                }
+            }
+        }
+    }
+}'
+
 curl -XPOST localhost:9200/simple -d '{
     "settings" : {
         "number_of_shards" : 1,
