@@ -16,12 +16,13 @@
 
 package me.pedrazas.simplesearch
 
-import com.gmongo.GMongo
+
+import com.mongodb.Mongo;
+import com.mongodb.BasicDBObject;
 
 class Indexer{
-    def mongo = new GMongo()
+    def mongo = new Mongo()
     def db = mongo.getDB("simpleSearch")
-
     static main(args) {
         def indexer = new Indexer()
         indexer.run()
@@ -29,25 +30,22 @@ class Indexer{
 
     def run(){
         // content_type: "text\html",
-        db.links.find(indexed: false).each{
+        def links = db.getCollection("links");
+        links.find(new BasicDBObject("indexed", false)).each{
             try{
                 def file = SimpleSearchUtils.fetchContent(it.url)
                 if(file!=null){
                     ElasticSearchSender.send('simple', 'webpage', it.oid, it.url, it.content_type, file)
-
                     println "Indexed OK! ${it._id} - ${it.url}"
-                    db.links.update(
-                                        [_id: it._id], //
-                                        [$set:
-                                            [indexed: true,                 //
-                                             indexed_date: new Date()
-                                             ],
-                                             $inc: [ indexed_count: 1]     //
-                                        ]
-                                    )
+                    // update doc
+                    def doc = new BasicDBObject()
+                    doc.append("\$set", new BasicDBObject().append("indexed", true).append("indexed_date", new Date()))
+                    BasicDBObject searchQuery = new BasicDBObject()
+                    searchQuery.put("_id", it.id)
+                    links.update(searchQuery, doc)
                 }
             }catch(FileNotFoundException){
-                // FileNotFoundException.printStackTrace()
+                FileNotFoundException.printStackTrace()
                 println "File not found: ${it.url}"
             }catch(Exception){
                 Exception.printStackTrace()

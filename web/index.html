@@ -1,0 +1,29 @@
+
+<!doctype html>
+<html ng-app>
+  <head>
+    <script src="http://code.angularjs.org/1.0.7/angular.min.js"></script>
+    <script src="assets/js/app.js"></script>
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+
+
+  </head>
+  <body ng-controller="ResultsCtrl">
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+          <div class="span2">
+            Search: <input ng-model="query"><button ng-click="search()">Search</button>
+          </div>
+          <div class="span10">
+             <ul >
+              <li ng-repeat="result in results" >
+                <a href="{{result.fields['webpage.url']}}">{{result.fields['webpage.url']}}</a>
+              </li>
+            </ul>
+
+          </div>
+        </div>
+    </div>
+</body>
+</html>

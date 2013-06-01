@@ -39,17 +39,17 @@ curl -XPOST localhost:9200/simple -d '{
     },
     "mappings" : {
         "webpage" : {
-            "_source" : { "enabled" : true },
             "properties" : {
                 "url" : { "type" : "string", "index" : "not_analyzed" },
                 "content_type" : { "type" : "string", "index" : "not_analyzed" },
                 "content" : {
                     "type" : "attachment",
                     "fields" : {
-                        "file" : {"index" : "yes", "store" : "no"},
+                        "title" : {"store"  : "yes"},
                         "date" : {"store" : "yes"},
+                        "name" : {"store"  : "yes"},
                         "author" : {"store" : "yes"},
-                        "title" : {"store"  : "yes"}
+                        "file" : {"term_vector":"with_positions_offsets", "store":"yes" }
                     }
                 }
             }

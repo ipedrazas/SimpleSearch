@@ -51,19 +51,19 @@ class WebPage {
     }
 
     def next() {
-        def seq = this.db.getCollection("counters");
-        def query = new BasicDBObject();
-        query.put("_id", "seq");
-        def update = new BasicDBObject("c", 2);
-        def res = seq.findAndModify(query, new BasicDBObject(), new BasicDBObject(), false, update, true, true);
-        return res.get("c").toString();
+        def seq = db.getCollection("counters")
+        def query = new BasicDBObject()
+        query.put("_id", "seq")
+        def change = new BasicDBObject("c", 1)
+        def update = new BasicDBObject("\$inc", change)
+        def res = seq.findAndModify(query, new BasicDBObject(), new BasicDBObject(), false, update, true, true)
+        return res.get("c").toString()
     }
 
     def save(){
             // oid: this.next() here because we don't want to count the not found errors
         if (this.responseCode == 200 || this.responseCode == 201){
-            // def page = [url: this.url, content_type: this.contentType, oid: this.next(), modified: this.modified, added: this.created, indexed: this.indexed]
-            DBCollection collection = db.getCollection("counters");
+            DBCollection collection = db.getCollection("links");
             collection.insert(new BasicDBObject("url", this.url)
                 .append("content_type", this.contentType)
                 .append("oid", this.next())
@@ -71,7 +71,7 @@ class WebPage {
                 .append("added", this.created)
                 .append("indexed", this.indexed)
             )
-            // this.db.links.save(page)
+
         }
     }
 }

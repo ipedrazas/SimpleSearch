@@ -24,7 +24,7 @@ import static groovyx.net.http.ContentType.JSON
 class ElasticSearchSender{
 
 
-    static void send(String index, String objectType, int oid, String url, String contentType, String file){
+    static void send(String index, String objectType, String oid, String url, String contentType, String file){
         def UrlES = "http://localhost:9200/${index}/${objectType}/${oid}"
         println "Url to Index: ${url}"
         try{

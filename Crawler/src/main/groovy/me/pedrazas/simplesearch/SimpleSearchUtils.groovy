@@ -92,9 +92,9 @@ class SimpleSearchUtils{
                 println "Url Candidates ${links.size()} URLs. Total: ${linkMap.size()}"
             }else
                 println "No links found"
-        }catch (FileNotFoundException) {
+        }catch (Exception) {
             println "URL Not Found ${url}"
-            println "ERROR ${FileNotFoundException.printStackTrace()}"
+            // println "ERROR ${FileNotFoundException.printStackTrace()}"
         }
     }
 
