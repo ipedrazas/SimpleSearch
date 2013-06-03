@@ -23,7 +23,7 @@ Searching is meaningless unless you have content. Content is King, that we would
 
 We will be indexing HTML and PDF. Indexing HTML is quite trivial, since it's text and ElasticSearch loves text. PDFs are slightly different. To index them, we're going to use the Attachment Plugin (see below). This plugin uses [Apache Tika](http://tika.apache.org/), so, in principle, you could index any document type supported by Apache Tika.
 
-The website we will be indexing is [http://simplesearch.pedrazas.me](http://simplesearch.pedrazas.me)
+The website we will be indexing is [http://simplesearch.pedrazas.me](http://simplesearch.pedrazas.me) that contains around 270MB of data
 
 
 ### Java installation in Ubuntu
@@ -54,6 +54,7 @@ To add documents to our index we will explore three different paths:
 The mapper attachments plugin adds the attachment type to ElasticSearch using Tika.
 
 In order to install the plugin, simply run:
+
     sudo bin/plugin -install elasticsearch/elasticsearch-mapper-attachments/1.7.0
 
 ### Web Interface - Inquisitor
@@ -77,7 +78,10 @@ In order to install the plugin, run:
 
 You can find [FS River](https://github.com/richardwilly98/elasticsearch-river-mongodb/) in github
 
+    sudo bin/plugin -url https://github.com/downloads/richardwilly98/elasticsearch-river-mongodb/elasticsearch-river-mongodb-1.6.5.zip -install river-mongodb
 
+
+## One last thing...
 Remember to restart ES after installing these plugins
 
 
