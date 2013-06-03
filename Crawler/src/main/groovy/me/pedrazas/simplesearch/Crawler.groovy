@@ -33,7 +33,7 @@ class Crawler{
     static main(args) {
         String[] urls = ["http://localhost/", "http://ivan.pedrazas.com/"]
         def c = new Crawler(urls)
-        // c.run()
+        c.run()
     }
 
     def Crawler(String[] urls){
