@@ -16,12 +16,13 @@
 
 package me.pedrazas.simplesearch
 
-import com.mongodb.Mongo;
 
+import com.mongodb.MongoClient;
 
 class Crawler{
 
-    def mongo = new Mongo()
+    def env = System.getenv()
+    def mongo = new MongoClient(env['MONGO_HOST'], env['MONGO_PORT'].toInteger())
     def db = mongo.getDB("simpleSearch")
 
     Map<String, Boolean> linkMap
@@ -32,7 +33,7 @@ class Crawler{
     static main(args) {
         String[] urls = ["http://localhost/", "http://ivan.pedrazas.com/"]
         def c = new Crawler(urls)
-        c.run()
+        // c.run()
     }
 
     def Crawler(String[] urls){
