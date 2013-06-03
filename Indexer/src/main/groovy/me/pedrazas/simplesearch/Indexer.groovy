@@ -16,13 +16,27 @@
 
 package me.pedrazas.simplesearch
 
-
-import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import com.mongodb.BasicDBObject;
 
 class Indexer{
-    def mongo = new Mongo()
-    def db = mongo.getDB("simpleSearch")
+
+
+    def mongo
+    def db
+
+     def Indexer(){
+        def env = System.getenv()
+        this.mongo = new MongoClient(env['MONGO_HOST'], env['MONGO_PORT'].toInteger())
+        def dbTest = mongo.getDB("test")
+        def auth = dbTest.authenticate(env['MONGO_USER'], env['MONGO_PASSWORD']);
+        if(auth)
+            this.db = mongo.getDB("SimpleSearch")
+        else
+            System.exit -1
+    }
+
+
     static main(args) {
         def indexer = new Indexer()
         indexer.run()
