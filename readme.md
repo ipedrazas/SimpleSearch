@@ -23,7 +23,7 @@ Searching is meaningless unless you have content. Content is King, that we would
 
 We will be indexing HTML and PDF. Indexing HTML is quite trivial, since it's text and ElasticSearch loves text. PDFs are slightly different. To index them, we're going to use the Attachment Plugin (see below). This plugin uses [Apache Tika](http://tika.apache.org/), so, in principle, you could index any document type supported by Apache Tika.
 
-The website we will be indexing is (http://simplesearch.pedrazas.me)[http://simplesearch.pedrazas.me]
+The website we will be indexing is [http://simplesearch.pedrazas.me](http://simplesearch.pedrazas.me)
 
 
 ### Java installation in Ubuntu
