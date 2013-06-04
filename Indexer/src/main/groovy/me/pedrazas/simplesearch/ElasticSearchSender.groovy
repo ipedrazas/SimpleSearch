@@ -34,7 +34,7 @@ class ElasticSearchSender{
                   webpage : [
                     url: url,
                     content_type: contentType,
-                    content: file
+                    file: file
                   ]
                 ]
 

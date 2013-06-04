@@ -25,15 +25,20 @@ class Indexer{
     def mongo
     def db
 
-     def Indexer(){
-        def env = System.getenv()
-        this.mongo = new MongoClient(env['MONGO_HOST'], env['MONGO_PORT'].toInteger())
-        def dbTest = mongo.getDB("test")
-        def auth = dbTest.authenticate(env['MONGO_USER'], env['MONGO_PASSWORD']);
-        if(auth)
-            this.db = mongo.getDB("SimpleSearch")
-        else
-            System.exit -1
+    // def Indexer(){
+    //     def env = System.getenv()
+    //     this.mongo = new MongoClient(env['MONGO_HOST'], env['MONGO_PORT'].toInteger())
+    //     def dbTest = mongo.getDB("test")
+    //     def auth = dbTest.authenticate(env['MONGO_USER'], env['MONGO_PASSWORD']);
+    //     if(auth)
+    //         this.db = mongo.getDB("SimpleSearch")
+    //     else
+    //         System.exit -1
+    // }
+
+    def Indexer(){
+        this.mongo = new MongoClient('localhost',27017)
+        this.db = mongo.getDB("simpleSearch")
     }
 
 

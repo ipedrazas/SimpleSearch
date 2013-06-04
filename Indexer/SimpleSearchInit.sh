@@ -1,11 +1,8 @@
 # Delete index
 
-
-
 curl -XDELETE localhost:9200/simple
 
 # Index creation
-
 
 curl -XPOST localhost:9200/simple -d '{
     "settings" : {
@@ -32,50 +29,167 @@ curl -XPOST localhost:9200/simple -d '{
     }
 }'
 
-curl -XPOST localhost:9200/simple2 -d '{
-    "settings" : {
-        "number_of_shards" : 1,
-        "number_of_replicas":0
-    },
-    "mappings" : {
-        "webpage" : {
-            "_source" : { "enabled" : true , "excludes": ["webpage.content"]},
-            "properties" : {
-                "url" : { "type" : "string", "index" : "not_analyzed" },
-                "content_type" : { "type" : "string", "index" : "not_analyzed" },
-                "content" : {
-                    "type" : "attachment"
-                }
-            }
-        }
-    }
-}'
 
-curl -XPOST localhost:9200/simple -d '{
-    "settings" : {
-        "number_of_shards" : 1,
-        "number_of_replicas":0
-    },
-    "mappings" : {
-        "webpage" : {
-            "properties" : {
-                "url" : { "type" : "string", "index" : "not_analyzed" },
-                "content_type" : { "type" : "string", "index" : "not_analyzed" },
-                "content" : {
-                    "type" : "attachment",
-                    "fields" : {
-                        "title" : {"store"  : "yes"},
-                        "date" : {"store" : "yes"},
-                        "name" : {"store"  : "yes"},
-                        "author" : {"store" : "yes"},
-                        "file" : {"term_vector":"with_positions_offsets", "store":"yes" }
+curl -XPUT 'localhost:9200/simple/' -d '{
+            "mappings" : {
+                  "webpage" : {
+                    "_source" : { "enabled" : false },
+                    "properties" : {
+                      "file" : {
+                        "type" : "attachment",
+                        "path" : "full",
+                        "fields" : {
+                          "file" : {
+                            "type" : "string",
+                            "store" : "yes",
+                            "term_vector" : "with_positions_offsets"
+                          },
+                          "author" : {
+                            "type" : "string"
+                          },
+                          "title" : {
+                            "type" : "string",
+                            "store" : "yes"
+                          },
+                          "name" : {
+                            "type" : "string",
+                            "store" : "yes"
+                          },
+                          "date" : {
+                            "type" : "date",
+                            "format" : "dateOptionalTime"
+                          },
+                          "keywords" : {
+                            "type" : "string"
+                          },
+                          "content_type" : {
+                            "type" : "string",
+                            "store" : "yes"
+                          }
+                        }
+                      },
+                      "name" : {
+                        "type" : "string",
+                        "analyzer" : "keyword",
+                        "store" : true
+                      },
+                      "postDate" : {
+                        "type" : "date",
+                        "format" : "dateOptionalTime"
+                      },
+                      "filesize" : {
+                        "type" : "long"
+                      },
+                      "url" : {
+                        "type" : "string",
+                        "store" : true
+                      },
+                       "content_type" : {
+                        "type" : "string",
+                        "store" : true
+                      }
                     }
-                }
+                  }
             }
-        }
-    }
+        }'
+
+
+curl -XDELETE localhost:9200/fsindex
+curl -XDELETE localhost:9200/_river/fsindex
+
+curl -XPUT 'localhost:9200/fsindex/' -d '{
+            "mappings" : {
+                  "doc" : {
+                    "_source" : { "enabled" : false },
+                    "properties" : {
+                      "file" : {
+                        "type" : "attachment",
+                        "path" : "full",
+                        "fields" : {
+                          "file" : {
+                            "type" : "string",
+                            "store" : "yes",
+                            "term_vector" : "with_positions_offsets"
+                          },
+                          "author" : {
+                            "type" : "string"
+                          },
+                          "title" : {
+                            "type" : "string",
+                            "store" : "yes"
+                          },
+                          "name" : {
+                            "type" : "string",
+                            "store" : "yes"
+                          },
+                          "date" : {
+                            "type" : "date",
+                            "format" : "dateOptionalTime"
+                          },
+                          "keywords" : {
+                            "type" : "string"
+                          },
+                          "content_type" : {
+                            "type" : "string",
+                            "store" : "yes"
+                          }
+                        }
+                      },
+                      "name" : {
+                        "type" : "string",
+                        "analyzer" : "keyword",
+                        "store" : true
+                      },
+                      "pathEncoded" : {
+                        "type" : "string",
+                        "analyzer" : "keyword"
+                      },
+                      "postDate" : {
+                        "type" : "date",
+                        "format" : "dateOptionalTime"
+                      },
+                      "rootpath" : {
+                        "type" : "string",
+                        "analyzer" : "keyword"
+                      },
+                      "virtualpath" : {
+                        "type" : "string",
+                        "analyzer" : "keyword",
+                        "store" : true
+                      },
+                      "filesize" : {
+                        "type" : "long"
+                      }
+                    }
+                  }
+            }
+        }'
+
+curl -XPUT 'localhost:9200/_river/fsindex/_meta' -d '{
+  "type": "fs",
+  "fs": {
+        "name": "SimpleSearch website",
+        "url": "/var/www/",
+        "update_rate": 3600000,
+        "includes": "*.html,*.pdf"
+  }
 }'
 
+
+curl -XGET http://localhost:9200/fsindex/doc/_search -d '{
+  "query" : {
+    "text" : {
+        "_all" : "main Index and MongoDB"
+    }
+  }
+}'
+
+
+## Start & Stop Rivers
+# Start
+curl 'localhost:9200/_river/fsindex/_start'
+# Stop
+curl 'localhost:9200/_river/fsindex/_stop'
 
 
 # Adding a doc
@@ -111,7 +225,31 @@ curl -XPUT 'http://localhost:9200/simple/webpage/1' -d '{
 # Query
 
 curl -XGET 'http://localhost:9200/simple/webpage/_search?size=10&pretty' -d '{"query": {"query_string":{"query": "sticky"}}}'
+curl -XGET 'http://localhost:9200/fsindex/doc/_search?size=10&pretty' -d '{"query": {"query_string":{"query": "sticky"}}}'
 
 curl -XGET 'http://localhost:9200/simple/webpage/_search?size=10&pretty' -d '{"query": {"query_string":{"query": "javascript"}}}'
 
 curl -XGET 'http://localhost:9200/simple/webpage/_search?size=10&pretty' -d '{"query": {"query_string":{"query": "outputStartTag"}}}'
+
+curl -XPOST http://localhost:9200/fsindex/doc/_search -d '{
+  "fields" : ["file.content_type", "name", "virtualpath"],
+  "query":{
+    "match_all" : {}
+  }
+}'
+
+
+curl -XPOST http://localhost:9200/fsindex/doc/_search -d '{
+  "fields" : ["file"],
+  "query":{
+    "match_all" : {}
+  }
+}'
+
+
+curl -XGET 'http://localhost:9200/simple/webpage/_search?size=10&pretty&q=sticky&fields=name,virtualpath'
+curl -XGET 'http://localhost:9200/fsindex/doc/_search?size=10&pretty&q=sticky&fields=name,virtualpath'
+
+
+curl -XGET 'http://localhost:9200/fsindex/doc/_search?size=10&pretty&q=sticky&fields=*'
+curl -XGET 'http://localhost:9200/simple/webpage/_search?size=10&pretty&q=sticky&fields=*'
