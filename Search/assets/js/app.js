@@ -19,6 +19,7 @@
 function ResultsCtrl($scope, $http) {
     $scope.query = 'python';
     $scope.search = function(){
+        var safe_url = "/search.php?query="+$scope.query+"";
         $http({method: 'GET', url: 'http://localhost:9200/simple/webpage/_search?size=20&q='+$scope.query+'&fields=file.title,url'}).
             success(function(data, status, headers, config) {
                 console.log(data.hits.hits;

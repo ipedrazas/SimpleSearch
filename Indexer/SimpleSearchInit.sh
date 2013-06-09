@@ -169,7 +169,7 @@ curl -XPUT 'localhost:9200/_river/fsindex/_meta' -d '{
   "type": "fs",
   "fs": {
         "name": "SimpleSearch website",
-        "url": "/var/www/",
+        "url": "/home/ivan/www/simplesearch",
         "update_rate": 3600000,
         "includes": "*.html,*.pdf"
   }

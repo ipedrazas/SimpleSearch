@@ -27,7 +27,7 @@ class Crawler{
     Map<String, Boolean> linkMap
     def parser
     def formats = [".html", ".pdf", "/"]
-    def base_urls = ["http://localhost", "http://ivan.pedrazas", "http://simplesearch.pedrazas"]
+    def base_urls = ["http://ivan.pedrazas", "http://simplesearch.pedrazas"]
 
     static main(args) {
         String[] urls = ["http://simplesearch.pedrazas.me", "http://ivan.pedrazas.me/"]
@@ -38,12 +38,7 @@ class Crawler{
     def Crawler(String[] urls){
         def env = System.getenv()
         this.mongo = new MongoClient(env['MONGO_HOST'], env['MONGO_PORT'].toInteger())
-        def dbTest = mongo.getDB("test")
-        def auth = dbTest.authenticate(env['MONGO_USER'], env['MONGO_PASSWORD']);
-        if(auth)
-            this.db = mongo.getDB("SimpleSearch")
-        else
-            System.exit -1
+        this.db = mongo.getDB("SimpleSearch")
         this.linkMap = new HashMap<String, Boolean>()
         for(String crawlUrl : urls)
             this.linkMap.put(crawlUrl, false)
