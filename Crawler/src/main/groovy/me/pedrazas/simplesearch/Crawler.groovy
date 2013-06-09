@@ -27,10 +27,10 @@ class Crawler{
     Map<String, Boolean> linkMap
     def parser
     def formats = [".html", ".pdf", "/"]
-    def base_urls = ["http://ivan.pedrazas", "http://simplesearch.pedrazas"]
+    def base_urls = ["http://ivan.pedrazas.me",  "http://simplesearch.pedrazas.me"]
 
     static main(args) {
-        String[] urls = ["http://simplesearch.pedrazas.me", "http://ivan.pedrazas.me/"]
+        String[] urls = ["http://simplesearch.pedrazas.me/", "http://ivan.pedrazas.me/"]
         def c = new Crawler(urls)
         c.run()
     }
