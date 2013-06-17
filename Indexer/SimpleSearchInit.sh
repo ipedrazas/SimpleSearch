@@ -247,9 +247,10 @@ curl -XPOST http://localhost:9200/fsindex/doc/_search -d '{
 }'
 
 
-curl -XGET 'http://localhost:9200/simple/webpage/_search?size=10&pretty&q=sticky&fields=name,virtualpath'
+curl -XGET 'http://localhost:9200/simple/webpage/_search?size=10&pretty&q=sticky&fields=url,file.title'
 curl -XGET 'http://localhost:9200/fsindex/doc/_search?size=10&pretty&q=sticky&fields=name,virtualpath'
 
 
 curl -XGET 'http://localhost:9200/fsindex/doc/_search?size=10&pretty&q=sticky&fields=*'
 curl -XGET 'http://localhost:9200/simple/webpage/_search?size=10&pretty&q=sticky&fields=*'
+
