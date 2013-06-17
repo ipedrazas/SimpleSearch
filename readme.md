@@ -32,8 +32,8 @@ The website we will be indexing is [http://simplesearch.pedrazas.me](http://simp
 
 
 ### ElasticSearch installation in Linux
-    wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.0.deb
-    sudo dpkg -i elasticsearch-0.90.0.deb
+    wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.1.deb
+    sudo dpkg -i elasticsearch-0.90.1.deb
 
     Installed at /usr/share/elasticsearch
 
