@@ -184,6 +184,17 @@ curl -XGET http://localhost:9200/fsindex/doc/_search -d '{
   }
 }'
 
+## MongoDB River
+
+curl -X PUT localhost:9200/_river/mongodb/_meta -d '{
+        "type":"mongodb",
+        "mongodb":{
+                "db":"DATABASE_NAME",
+                "collection":"COLLECTION",
+                "index":"ES_INDEX_NAME"
+                    }
+            }'
+
 
 ## Start & Stop Rivers
 # Start
@@ -254,3 +265,28 @@ curl -XGET 'http://localhost:9200/fsindex/doc/_search?size=10&pretty&q=sticky&fi
 curl -XGET 'http://localhost:9200/fsindex/doc/_search?size=10&pretty&q=sticky&fields=*'
 curl -XGET 'http://localhost:9200/simple/webpage/_search?size=10&pretty&q=sticky&fields=*'
 
+
+### Quick test
+
+curl -XPUT 'http://localhost:9200/paper'
+
+curl -XPUT 'http://localhost:9200/paper/article/1' -d '{
+    "article" : {
+        "user" : "ipedrazas",
+        "message" : "trying out Elastic Search"
+    }
+}'
+
+curl -XPUT 'http://localhost:9200/paper/article/2' -d '{
+    "article" : {
+        "user" : "valgreens",
+        "message" : "Have you tried backbone.js ?"
+    }
+}'
+
+
+#Get document by id
+curl -XGET 'http://localhost:9200/paper/article/1'
+
+#Search document
+curl -XGET 'http://localhost:9200/paper/article/_search?q=user:ipedrazas'
